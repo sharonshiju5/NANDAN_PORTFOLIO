@@ -16,7 +16,8 @@ export const StaggeredMenu = ({
   isFixed = false,
   accentColor = '#5227FF',
   onMenuOpen,
-  onMenuClose
+  onMenuClose,
+  leftContent
 }) => {
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
@@ -104,7 +105,12 @@ export const StaggeredMenu = ({
     const tl = gsap.timeline({ paused: true });
 
     layerStates.forEach((ls, i) => {
-      tl.fromTo(ls.el, { xPercent: ls.start }, { xPercent: 0, duration: 0.5, ease: 'power4.out' }, i * 0.07);
+      tl.fromTo(
+        ls.el,
+        { xPercent: ls.start },
+        { xPercent: 0, duration: 0.5, ease: 'power4.out' },
+        i * 0.07
+      );
     });
 
     const lastTime = layerStates.length ? (layerStates.length - 1) * 0.07 : 0;
@@ -140,20 +146,20 @@ export const StaggeredMenu = ({
     if (socialTitle || socialLinks.length) {
       const socialsStart = panelInsertTime + panelDuration * 0.4;
 
-      if (socialTitle) tl.to(socialTitle, { opacity: 1, duration: 0.5, ease: 'power2.out' }, socialsStart);
+      if (socialTitle) tl.to(
+        socialTitle,
+        { opacity: 1, duration: 0.5, ease: 'power2.out' },
+        socialsStart
+      );
       if (socialLinks.length) {
-        tl.to(
-          socialLinks,
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.55,
-            ease: 'power3.out',
-            stagger: { each: 0.08, from: 'start' },
-            onComplete: () => gsap.set(socialLinks, { clearProps: 'opacity' })
-          },
-          socialsStart + 0.04
-        );
+        tl.to(socialLinks, {
+          y: 0,
+          opacity: 1,
+          duration: 0.55,
+          ease: 'power3.out',
+          stagger: { each: 0.08, from: 'start' },
+          onComplete: () => gsap.set(socialLinks, { clearProps: 'opacity' })
+        }, socialsStart + 0.04);
       }
     }
 
@@ -234,20 +240,20 @@ export const StaggeredMenu = ({
     }
   }, []);
 
-  const animateColor = useCallback(
-    opening => {
-      const btn = toggleBtnRef.current;
-      if (!btn) return;
-      colorTweenRef.current?.kill();
-      if (changeMenuColorOnOpen) {
-        const targetColor = opening ? openMenuButtonColor : menuButtonColor;
-        colorTweenRef.current = gsap.to(btn, { color: targetColor, delay: 0.18, duration: 0.3, ease: 'power2.out' });
-      } else {
-        gsap.set(btn, { color: menuButtonColor });
-      }
-    },
-    [openMenuButtonColor, menuButtonColor, changeMenuColorOnOpen]
-  );
+  const animateColor = useCallback(opening => {
+    const btn = toggleBtnRef.current;
+    if (!btn) return;
+    colorTweenRef.current?.kill();
+    if (changeMenuColorOnOpen) {
+      const targetColor = opening ? openMenuButtonColor : menuButtonColor;
+      colorTweenRef.current = gsap.to(
+        btn,
+        { color: targetColor, delay: 0.18, duration: 0.3, ease: 'power2.out' }
+      );
+    } else {
+      gsap.set(btn, { color: menuButtonColor });
+    }
+  }, [openMenuButtonColor, menuButtonColor, changeMenuColorOnOpen]);
 
   React.useEffect(() => {
     if (toggleBtnRef.current) {
@@ -312,19 +318,21 @@ export const StaggeredMenu = ({
 
   return (
     <div
-      className={`sm-scope z-40 ${isFixed ? 'fixed top-0 left-0 w-screen h-screen overflow-hidden' : 'w-full h-full'}`}
-    >
+      className={`sm-scope z-40 ${isFixed ? 'fixed top-0 left-0 w-screen h-screen overflow-hidden' : 'w-full h-full'}`}>
       <div
         className={(className ? className + ' ' : '') + 'staggered-menu-wrapper relative w-full h-full'}
         style={accentColor ? { ['--sm-accent']: accentColor } : undefined}
         data-position={position}
-        data-open={open || undefined}
-      >
+        data-open={open || undefined}>
+          {leftContent && (
+            <div className="sm-left-content-wrapper absolute left-0 top-0 h-full w-1/2 z-[1]">
+              {leftContent}
+            </div>
+          )}
         <div
           ref={preLayersRef}
           className="sm-prelayers absolute top-0 right-0 bottom-0 pointer-events-none z-[5]"
-          aria-hidden="true"
-        >
+          aria-hidden="true">
           {(() => {
             const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
             let arr = [...raw];
@@ -336,25 +344,24 @@ export const StaggeredMenu = ({
               <div
                 key={i}
                 className="sm-prelayer absolute top-0 right-0 h-full w-full translate-x-0"
-                style={{ background: c }}
-              />
+                style={{ background: c }} />
             ));
           })()}
         </div>
 
         <header
           className="staggered-menu-header absolute top-0 left-0 w-full flex items-center justify-between p-[2em] bg-transparent pointer-events-none z-20"
-          aria-label="Main navigation header"
-        >
-          <div className="sm-logo flex items-center select-none pointer-events-auto" aria-label="Logo">
+          aria-label="Main navigation header">
+          <div
+            className="sm-logo flex items-center select-none pointer-events-auto"
+            aria-label="Logo">
             <img
               src={logoUrl || '/src/assets/logos/reactbits-gh-white.svg'}
               alt="Logo"
               className="sm-logo-img block h-8 w-auto object-contain"
               draggable={false}
               width={110}
-              height={24}
-            />
+              height={24} />
           </div>
 
           <button
@@ -364,14 +371,14 @@ export const StaggeredMenu = ({
             aria-expanded={open}
             aria-controls="staggered-menu-panel"
             onClick={toggleMenu}
-            type="button"
-          >
+            type="button">
             <span
               ref={textWrapRef}
               className="sm-toggle-textWrap relative inline-block h-[1em] overflow-hidden whitespace-nowrap w-[var(--sm-toggle-width,auto)] min-w-[var(--sm-toggle-width,auto)]"
-              aria-hidden="true"
-            >
-              <span ref={textInnerRef} className="sm-toggle-textInner flex flex-col leading-none">
+              aria-hidden="true">
+              <span
+                ref={textInnerRef}
+                className="sm-toggle-textInner flex flex-col leading-none">
                 {textLines.map((l, i) => (
                   <span className="sm-toggle-line block h-[1em] leading-none" key={i}>
                     {l}
@@ -383,16 +390,13 @@ export const StaggeredMenu = ({
             <span
               ref={iconRef}
               className="sm-icon relative w-[14px] h-[14px] shrink-0 inline-flex items-center justify-center [will-change:transform]"
-              aria-hidden="true"
-            >
+              aria-hidden="true">
               <span
                 ref={plusHRef}
-                className="sm-icon-line absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
-              />
+                className="sm-icon-line absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]" />
               <span
                 ref={plusVRef}
-                className="sm-icon-line sm-icon-line-v absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
-              />
+                className="sm-icon-line sm-icon-line-v absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]" />
             </span>
           </button>
         </header>
@@ -402,33 +406,37 @@ export const StaggeredMenu = ({
           ref={panelRef}
           className="staggered-menu-panel absolute top-0 right-0 h-full bg-white flex flex-col p-[6em_2em_2em_2em] overflow-y-auto z-10 backdrop-blur-[12px]"
           style={{ WebkitBackdropFilter: 'blur(12px)' }}
-          aria-hidden={!open}
-        >
+          aria-hidden={!open}>
           <div className="sm-panel-inner flex-1 flex flex-col gap-5">
             <ul
               className="sm-panel-list list-none m-0 p-0 flex flex-col gap-2"
               role="list"
-              data-numbering={displayItemNumbering || undefined}
-            >
+              data-numbering={displayItemNumbering || undefined}>
               {items && items.length ? (
                 items.map((it, idx) => (
-                  <li className="sm-panel-itemWrap relative overflow-hidden leading-none" key={it.label + idx}>
+                  <li
+                    className="sm-panel-itemWrap relative overflow-hidden leading-none"
+                    key={it.label + idx}>
                     <a
                       className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]"
                       href={it.link}
                       aria-label={it.ariaLabel}
-                      data-index={idx + 1}
-                    >
-                      <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
+                      data-index={idx + 1}>
+                      <span
+                        className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
                         {it.label}
                       </span>
                     </a>
                   </li>
                 ))
               ) : (
-                <li className="sm-panel-itemWrap relative overflow-hidden leading-none" aria-hidden="true">
-                  <span className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]">
-                    <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
+                <li
+                  className="sm-panel-itemWrap relative overflow-hidden leading-none"
+                  aria-hidden="true">
+                  <span
+                    className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]">
+                    <span
+                      className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
                       No items
                     </span>
                   </span>
@@ -437,20 +445,21 @@ export const StaggeredMenu = ({
             </ul>
 
             {displaySocials && socialItems && socialItems.length > 0 && (
-              <div className="sm-socials mt-auto pt-8 flex flex-col gap-3" aria-label="Social links">
-                <h3 className="sm-socials-title m-0 text-base font-medium [color:var(--sm-accent,#ff0000)]">Socials</h3>
+              <div
+                className="sm-socials mt-auto pt-8 flex flex-col gap-3"
+                aria-label="Social links">
+                <h3
+                  className="sm-socials-title m-0 text-base font-medium [color:var(--sm-accent,#ff0000)]">Socials</h3>
                 <ul
                   className="sm-socials-list list-none m-0 p-0 flex flex-row items-center gap-4 flex-wrap"
-                  role="list"
-                >
+                  role="list">
                   {socialItems.map((s, i) => (
                     <li key={s.label + i} className="sm-socials-item">
                       <a
                         href={s.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="sm-socials-link text-[1.2rem] font-medium text-[#111] no-underline relative inline-block py-[2px] transition-[color,opacity] duration-300 ease-linear"
-                      >
+                        className="sm-socials-link text-[1.2rem] font-medium text-[#111] no-underline relative inline-block py-[2px] transition-[color,opacity] duration-300 ease-linear">
                         {s.label}
                       </a>
                     </li>
@@ -461,7 +470,6 @@ export const StaggeredMenu = ({
           </div>
         </aside>
       </div>
-
       <style>{`
 .sm-scope .staggered-menu-wrapper { position: relative; width: 100%; height: 100%; z-index: 40; }
 .sm-scope .staggered-menu-header { position: absolute; top: 0; left: 0; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 2em; background: transparent; pointer-events: none; z-index: 20; }
@@ -478,8 +486,8 @@ export const StaggeredMenu = ({
 .sm-scope .sm-panel-itemWrap { position: relative; overflow: hidden; line-height: 1; }
 .sm-scope .sm-icon-line { position: absolute; left: 50%; top: 50%; width: 100%; height: 2px; background: currentColor; border-radius: 2px; transform: translate(-50%, -50%); will-change: transform; }
 .sm-scope .sm-line { display: none !important; }
-.sm-scope .staggered-menu-panel { poimport StaggeredMenu from '../../../ts-default/Components/StaggeredMenu/StaggeredMenu';
-sition: absolute; top: 0; right: 0; width: clamp(260px, 38vw, 420px); height: 100%; background: white; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; padding: 6em 2em 2em 2em; overflow-y: auto; z-index: 10; }
+.sm-scope .staggered-menu-panel { position: absolute; top: 0; right: 0; width: clamp(260px, 38vw, 420px); height: 100%; background: white; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; padding: 6em 2em 2em 2em; overflow-y: auto; z-index: 10; }
+.sm-scope .sm-left-content-wrapper { position: absolute; left: 0; top: 0; height: 100%; width: 100%; z-index: 10; pointer-events: auto; overflow-y: auto; }
 .sm-scope [data-position='left'] .staggered-menu-panel { right: auto; left: 0; }
 .sm-scope .sm-prelayers { position: absolute; top: 0; right: 0; bottom: 0; width: clamp(260px, 38vw, 420px); pointer-events: none; z-index: 5; }
 .sm-scope [data-position='left'] .sm-prelayers { right: auto; left: 0; }

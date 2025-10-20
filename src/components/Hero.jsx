@@ -7,51 +7,41 @@ import image4 from "../assets/hero/image4.png"
 import image5 from "../assets/hero/image5.png"
 import image6 from "../assets/hero/image6.png"
 import image7 from "../assets/hero/image7.png"
+import StaggeredMenu from '../animations/StaggeredMenu';
 
 
 export default function Hero() {
     const images = [image1, image2, image3, image4, image5, image6, image7];
+    const menuItems = [
+  { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
+  { label: 'About', ariaLabel: 'Learn about us', link: '/about' },
+  { label: 'Services', ariaLabel: 'View our services', link: '/services' },
+  { label: 'Contact', ariaLabel: 'Get in touch', link: '/contact' }
+];
+
+const socialItems = [
+  { label: 'Twitter', link: 'https://twitter.com' },
+  { label: 'GitHub', link: 'https://github.com' },
+  { label: 'LinkedIn', link: 'https://linkedin.com' }
+];
     return (
-        <div className="bg-black min-h-screen text-white">
-            <div className="max-w-7xl mx-auto px-8 pt-32 pb-16">
-                <div className="text-center mb-16 font-extralight">
-                    <p className="text-teal-400 text-xl mb-4 font-light italic">Hello,</p>
-                    <p className="text-teal-400 text-xl mb-8 font-light italic">I'm Nandhan k's</p>
-
-                    <h1 className="text-6xl md:text-7xl font-bold mb-6 leading-tight">
-                        Crafting Interfaces<br />
-                        That Feel Just Right.
-                    </h1>
-
-                    <p className="text-gray-400 text-lg mb-4">Creative thinker. Pixel perfectionist. Problem solver.</p>
-                    <p className="text-gray-400 text-lg mb-12">Blending creativity with functionality to craft meaningful user experiences.</p>
-
-                    <button className="bg-transparent border border-gray-600 text-white px-8 py-3 rounded-full hover:bg-gray-800 transition-colors">
-                        Specialize in UI/UX Design & Branding
-                    </button>
-                </div>
-            </div>
-            <div className='flex justify-between bg-amber-700 items-end'>
-                <div>
-                    <img className='w-[209px] h-[176.75px]' src={image1} alt="" />
-                </div>
-
-                <div>
-                    <img className='w-[289px] h-[216.75px]' src={image2} alt="" />
-                </div>
-
-                <div>
-                    <img className='w-[470px] h-[290.75px]' src={image3} alt="" />
-                </div>
-
-                <div>
-                    <img className='w-[289px] h-[216.75px]' src={image4} alt="" />
-                </div>
-
-                <div>
-                    <img className='w-[209px] h-[176.75px]' src={image5} alt="" />
-                </div>
-            </div>
+        <div style={{ height: '100vh' , background: '#1a1a1a' }}>
+          {/* <StaggeredMenu
+            position="right"
+            items={menuItems}
+            socialItems={socialItems}
+            displaySocials={true}
+            displayItemNumbering={true}
+            menuButtonColor="#fff"
+            openMenuButtonColor="#fff"
+            changeMenuColorOnOpen={true}
+            colors={['#B19EEF', '#5227FF']}
+            logoUrl="/path-to-your-logo.svg"
+            accentColor="#ff6b6b"
+            onMenuOpen={() => console.log('Menu opened')}
+            onMenuClose={() => console.log('Menu closed')}
+          /> */}
+        
         </div>
     )
 }
