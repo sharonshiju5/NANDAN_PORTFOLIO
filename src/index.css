@@ -6,6 +6,15 @@
 @import "slick-carousel/slick/slick-theme.css"; */
 body{
   background-color: black;
+  color: white;
+}
+/* globals.css */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }
 
 @theme inline {

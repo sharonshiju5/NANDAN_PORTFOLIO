@@ -9,6 +9,8 @@ function App() {
     { label: 'Home', link: '#home' },
     { label: 'About', link: '#about' },
     { label: 'Work', link: '#work' },
+    { label: 'Contact', link: '#contact' },
+    { label: 'Contact', link: '#contact' },
     { label: 'Contact', link: '#contact' }
   ];
 
