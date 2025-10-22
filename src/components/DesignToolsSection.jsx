@@ -21,10 +21,10 @@ export default function DesignToolsSection() {
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-x-0 md:gap-x-6 gap-6">
           {/* UX Design Card */}
-          <div className="bg-zinc-900 col-span-3 flex  justify-center rounded-3xl p-10 relative overflow-hidden">
-            <div className="relative w-  z-10">
+          <div className="bg-zinc-900 col-span-3 flex  justify-center rounded-3xl p-2 lg:p-10 relative overflow-hidden">
+            <div className="relative w-full  z-10">
               <h2 className="text-4xl font-bold mb-4">UX Design</h2>
               <p className="text-gray-400 text-lg mb-8 max-w-md">
                 Designing seamless user experiences through research, strategy, and creative interaction.
@@ -46,7 +46,7 @@ export default function DesignToolsSection() {
           </div>
 
           {/* UI Design Card */}
-          <div className="bg-zinc-900 col-span-2 rounded-3xl p-10 relative overflow-hidden">
+          <div className="bg-zinc-900 col-span-2 rounded-3xl p-2 lg:p-10 relative overflow-hidden">
             <div className="relative z-10">
               <h2 className="text-4xl font-bold mb-4">UI Design</h2>
               <p className="text-gray-400 text-lg mb-8 max-w-md pr-5">
@@ -75,7 +75,7 @@ export default function DesignToolsSection() {
           </div>
 
           {/* Product Design Card */}
-          <div className="bg-zinc-900 col-span-2 rounded-3xl p-10 relative overflow-hidden">
+          <div className="bg-zinc-900  col-span-2 rounded-3xl p-2 lg:p-10 relative overflow-hidden">
             <div className="relative z-10">
               <h2 className="text-4xl font-bold mb-4">Product Design</h2>
               <p className="text-gray-400 text-lg mb-8 pr-25 max-w-md">
@@ -91,7 +91,7 @@ export default function DesignToolsSection() {
           </div>
 
           {/* Graphic Design Card */}
-          <div className="bg-zinc-900 col-span-3 rounded-3xl p-10 relative overflow-hidden">
+          <div className="bg-zinc-900 col-span-3 rounded-3xl p-2 lg:p-10 relative overflow-hidden">
             <div className="relative z-10">
               <h2 className="text-4xl font-bold mb-4">Graphic Design</h2>
               <p className="text-gray-400 text-lg mb-8 max-w-md">
